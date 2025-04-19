@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
-import Navbar from '../components/Navbar';
+import DashboardLayout from '../components/DashboardLayout';
 
 const Perfil = () => {
   const [nome, setNome] = useState('');
@@ -50,57 +50,54 @@ const Perfil = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="container mt-4">
-        <h2>Meu Perfil</h2>
+    <DashboardLayout>
+      <h2 className="mb-4">Meu Perfil</h2>
 
-        <form onSubmit={handleSubmit} className="mt-4">
-          {mensagem && <div className="alert alert-success">{mensagem}</div>}
-          {erro && <div className="alert alert-danger">{erro}</div>}
+      <form onSubmit={handleSubmit} className="mt-4">
+        {mensagem && <div className="alert alert-success">{mensagem}</div>}
+        {erro && <div className="alert alert-danger">{erro}</div>}
 
-          <div className="mb-3">
-            <label className="form-label">Nome</label>
-            <input
-              type="text"
-              className="form-control"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              required
-            />
-          </div>
+        <div className="mb-3">
+          <label className="form-label">Nome</label>
+          <input
+            type="text"
+            className="form-control"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+          />
+        </div>
 
-          <div className="mb-3">
-            <label className="form-label">Email (não editável)</label>
-            <input type="email" className="form-control" value={email} disabled />
-          </div>
+        <div className="mb-3">
+          <label className="form-label">Email (não editável)</label>
+          <input type="email" className="form-control" value={email} disabled />
+        </div>
 
-          <div className="mb-3">
-            <label className="form-label">Nova Senha</label>
-            <input
-              type="password"
-              className="form-control"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              placeholder="Deixe em branco para não alterar"
-            />
-          </div>
+        <div className="mb-3">
+          <label className="form-label">Nova Senha</label>
+          <input
+            type="password"
+            className="form-control"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            placeholder="Deixe em branco para não alterar"
+          />
+        </div>
 
-          <div className="mb-3">
-            <label className="form-label">Confirmar Nova Senha</label>
-            <input
-              type="password"
-              className="form-control"
-              value={confirmarSenha}
-              onChange={(e) => setConfirmarSenha(e.target.value)}
-              placeholder="Repita a nova senha"
-            />
-          </div>
+        <div className="mb-3">
+          <label className="form-label">Confirmar Nova Senha</label>
+          <input
+            type="password"
+            className="form-control"
+            value={confirmarSenha}
+            onChange={(e) => setConfirmarSenha(e.target.value)}
+            placeholder="Repita a nova senha"
+          />
+        </div>
 
-          <button className="btn btn-primary">Salvar</button>
-        </form>
-      </div>
-    </>
+        <button className="btn btn-primary">Salvar</button>
+      </form>
+    </DashboardLayout>
   );
 };
 

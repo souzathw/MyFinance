@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
-import Navbar from '../components/Navbar';
+import DashboardLayout from '../components/DashboardLayout';
 
 const Despesas = () => {
   const [descricao, setDescricao] = useState('');
@@ -86,124 +86,54 @@ const Despesas = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="container">
-        <h2 className="mb-4">{editando ? 'Editar Despesa' : 'Despesas'}</h2>
+    <DashboardLayout>
+      <h2 className="mb-4">{editando ? 'Editar Despesa' : 'Despesas'}</h2>
 
-        <form onSubmit={handleSubmit}>
-          {erro && <div className="alert alert-danger">{erro}</div>}
+      <form onSubmit={handleSubmit}>
+        {erro && <div className="alert alert-danger">{erro}</div>}
 
-          <div className="row mb-3">
-            <div className="col-md-4">
-              <label className="form-label">Descrição</label>
-              <input
-                type="text"
-                className="form-control"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-                required
-              />
-            </div>
-            <div className="col-md-2">
-              <label className="form-label">Valor</label>
-              <input
-                type="number"
-                className="form-control"
-                value={valor}
-                onChange={(e) => setValor(e.target.value)}
-                required
-                min="0.01"
-                step="0.01"
-              />
-            </div>
-            <div className="col-md-3">
-              <label className="form-label">Data</label>
-              <input
-                type="date"
-                className="form-control"
-                value={data}
-                onChange={(e) => setData(e.target.value)}
-                required
-              />
-            </div>
-            <div className="col-md-3">
-              <label className="form-label">Categoria</label>
-              <select
-                className="form-select"
-                value={categoriaId}
-                onChange={(e) => setCategoriaId(e.target.value)}
-                required
-              >
-                <option value="">Selecione</option>
-                {categorias.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.nome}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <button type="submit" className="btn btn-danger me-2">
-            {editando ? 'Atualizar' : 'Adicionar Despesa'}
-          </button>
-
-          {editando && (
-            <button type="button" className="btn btn-secondary" onClick={limparFormulario}>
-              Cancelar
-            </button>
-          )}
-        </form>
-
-        <h5 className="mt-5">Filtros</h5>
-        <div className="row mb-4">
-          <div className="col-md-2">
-            <label className="form-label">Data Início</label>
+        <div className="row mb-3">
+          <div className="col-md-4">
+            <label className="form-label">Descrição</label>
             <input
-              type="date"
+              type="text"
               className="form-control"
-              value={filtros.data_inicio}
-              onChange={(e) => setFiltros({ ...filtros, data_inicio: e.target.value })}
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+              required
             />
           </div>
           <div className="col-md-2">
-            <label className="form-label">Data Fim</label>
-            <input
-              type="date"
-              className="form-control"
-              value={filtros.data_fim}
-              onChange={(e) => setFiltros({ ...filtros, data_fim: e.target.value })}
-            />
-          </div>
-          <div className="col-md-2">
-            <label className="form-label">Valor Mínimo</label>
+            <label className="form-label">Valor</label>
             <input
               type="number"
               className="form-control"
-              value={filtros.min_valor}
-              onChange={(e) => setFiltros({ ...filtros, min_valor: e.target.value })}
+              value={valor}
+              onChange={(e) => setValor(e.target.value)}
+              required
+              min="0.01"
               step="0.01"
             />
           </div>
-          <div className="col-md-2">
-            <label className="form-label">Valor Máximo</label>
+          <div className="col-md-3">
+            <label className="form-label">Data</label>
             <input
-              type="number"
+              type="date"
               className="form-control"
-              value={filtros.max_valor}
-              onChange={(e) => setFiltros({ ...filtros, max_valor: e.target.value })}
-              step="0.01"
+              value={data}
+              onChange={(e) => setData(e.target.value)}
+              required
             />
           </div>
           <div className="col-md-3">
             <label className="form-label">Categoria</label>
             <select
               className="form-select"
-              value={filtros.categoria_id}
-              onChange={(e) => setFiltros({ ...filtros, categoria_id: e.target.value })}
+              value={categoriaId}
+              onChange={(e) => setCategoriaId(e.target.value)}
+              required
             >
-              <option value="">Todas</option>
+              <option value="">Selecione</option>
               {categorias.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.nome}
@@ -211,50 +141,117 @@ const Despesas = () => {
               ))}
             </select>
           </div>
-          <div className="col-md-1 d-flex align-items-end">
-            <button className="btn btn-secondary w-100" onClick={carregarDados}>
-              Filtrar
-            </button>
-          </div>
         </div>
 
-        <hr />
-        <h4>Despesas Cadastradas</h4>
-        {despesas.length === 0 ? (
-          <p>Nenhuma despesa encontrada.</p>
-        ) : (
-          <table className="table table-striped mt-3">
-            <thead>
-              <tr>
-                <th>Descrição</th>
-                <th>Valor</th>
-                <th>Data</th>
-                <th>Categoria</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {despesas.map((d) => (
-                <tr key={d.id}>
-                  <td>{d.descricao}</td>
-                  <td>R$ {parseFloat(d.valor).toFixed(2)}</td>
-                  <td>{new Date(d.data).toLocaleDateString()}</td>
-                  <td>{d.categoria?.nome}</td>
-                  <td>
-                    <button className="btn btn-sm btn-warning me-2" onClick={() => editarDespesa(d)}>
-                      Editar
-                    </button>
-                    <button className="btn btn-sm btn-danger" onClick={() => excluirDespesa(d.id)}>
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <button type="submit" className="btn btn-danger me-2">
+          {editando ? 'Atualizar' : 'Adicionar Despesa'}
+        </button>
+
+        {editando && (
+          <button type="button" className="btn btn-secondary" onClick={limparFormulario}>
+            Cancelar
+          </button>
         )}
+      </form>
+
+      <h5 className="mt-5">Filtros</h5>
+      <div className="row mb-4">
+        <div className="col-md-2">
+          <label className="form-label">Data Início</label>
+          <input
+            type="date"
+            className="form-control"
+            value={filtros.data_inicio}
+            onChange={(e) => setFiltros({ ...filtros, data_inicio: e.target.value })}
+          />
+        </div>
+        <div className="col-md-2">
+          <label className="form-label">Data Fim</label>
+          <input
+            type="date"
+            className="form-control"
+            value={filtros.data_fim}
+            onChange={(e) => setFiltros({ ...filtros, data_fim: e.target.value })}
+          />
+        </div>
+        <div className="col-md-2">
+          <label className="form-label">Valor Mínimo</label>
+          <input
+            type="number"
+            className="form-control"
+            value={filtros.min_valor}
+            onChange={(e) => setFiltros({ ...filtros, min_valor: e.target.value })}
+            step="0.01"
+          />
+        </div>
+        <div className="col-md-2">
+          <label className="form-label">Valor Máximo</label>
+          <input
+            type="number"
+            className="form-control"
+            value={filtros.max_valor}
+            onChange={(e) => setFiltros({ ...filtros, max_valor: e.target.value })}
+            step="0.01"
+          />
+        </div>
+        <div className="col-md-3">
+          <label className="form-label">Categoria</label>
+          <select
+            className="form-select"
+            value={filtros.categoria_id}
+            onChange={(e) => setFiltros({ ...filtros, categoria_id: e.target.value })}
+          >
+            <option value="">Todas</option>
+            {categorias.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-md-1 d-flex align-items-end">
+          <button className="btn btn-secondary w-100" onClick={carregarDados}>
+            Filtrar
+          </button>
+        </div>
       </div>
-    </>
+
+      <hr />
+      <h4>Despesas Cadastradas</h4>
+      {despesas.length === 0 ? (
+        <p>Nenhuma despesa encontrada.</p>
+      ) : (
+        <table className="table table-striped mt-3">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Data</th>
+              <th>Categoria</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {despesas.map((d) => (
+              <tr key={d.id}>
+                <td>{d.descricao}</td>
+                <td>R$ {parseFloat(d.valor).toFixed(2)}</td>
+                <td>{new Date(d.data).toLocaleDateString()}</td>
+                <td>{d.categoria?.nome}</td>
+                <td>
+                  <button className="btn btn-sm btn-warning me-2" onClick={() => editarDespesa(d)}>
+                    Editar
+                  </button>
+                  <button className="btn btn-sm btn-danger" onClick={() => excluirDespesa(d.id)}>
+                    Excluir
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </DashboardLayout>
   );
 };
 

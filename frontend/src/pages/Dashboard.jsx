@@ -89,6 +89,7 @@ const Dashboard = () => {
 
       {/* Gráficos */}
       <div className="row gy-4">
+        {/* Gráfico de barras */}
         <div className="col-xl-8 col-lg-7">
           <div className="card shadow-sm h-100">
             <div className="card-header fw-bold">Fluxo Mensal</div>
@@ -120,38 +121,45 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="col-xl-4 col-lg-5 d-flex flex-column gap-4">
-          <div className="card shadow-sm">
-            <div className="card-header fw-bold text-center">Receitas por Categoria</div>
-            <div className="card-body">
-              <Pie
-                data={{
-                  labels: categorias.receitas?.map((c) => c.categoria),
-                  datasets: [
-                    {
-                      data: categorias.receitas?.map((c) => Number(c.total)),
-                      backgroundColor: ['#28a745', '#6f42c1', '#ffc107', '#17a2b8', '#fd7e14'],
-                    },
-                  ],
-                }}
-              />
+        {/* Gráficos de pizza lado a lado */}
+        <div className="col-xl-4 col-lg-5">
+          <div className="row g-3">
+            <div className="col-6">
+              <div className="card shadow-sm h-100">
+                <div className="card-header fw-bold text-center">Receitas por Categoria</div>
+                <div className="card-body">
+                  <Pie
+                    data={{
+                      labels: categorias.receitas?.map((c) => c.categoria),
+                      datasets: [
+                        {
+                          data: categorias.receitas?.map((c) => Number(c.total)),
+                          backgroundColor: ['#28a745', '#6f42c1', '#ffc107', '#17a2b8', '#fd7e14'],
+                        },
+                      ],
+                    }}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="card shadow-sm">
-            <div className="card-header fw-bold text-center">Despesas por Categoria</div>
-            <div className="card-body">
-              <Pie
-                data={{
-                  labels: categorias.despesas?.map((c) => c.categoria),
-                  datasets: [
-                    {
-                      data: categorias.despesas?.map((c) => Number(c.total)),
-                      backgroundColor: ['#dc3545', '#20c997', '#6610f2', '#e83e8c', '#fd7e14'],
-                    },
-                  ],
-                }}
-              />
+            <div className="col-6">
+              <div className="card shadow-sm h-100">
+                <div className="card-header fw-bold text-center">Despesas por Categoria</div>
+                <div className="card-body">
+                  <Pie
+                    data={{
+                      labels: categorias.despesas?.map((c) => c.categoria),
+                      datasets: [
+                        {
+                          data: categorias.despesas?.map((c) => Number(c.total)),
+                          backgroundColor: ['#dc3545', '#20c997', '#6610f2', '#e83e8c', '#fd7e14'],
+                        },
+                      ],
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
