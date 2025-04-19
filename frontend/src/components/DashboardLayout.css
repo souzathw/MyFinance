@@ -1,0 +1,9 @@
+.sidebar {
+    width: 240px;
+    min-height: 100vh;
+  }
+  
+  .content-area {
+    overflow-x: hidden;
+  }
+  
