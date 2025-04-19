@@ -16,6 +16,11 @@ use App\Http\Controllers\DashboardController;
         Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::middleware('auth:api')->group(function () {
+    Route::put('/perfil', [\App\Http\Controllers\PerfilController::class, 'atualizar']);
+    });
+
+
+    Route::middleware('auth:api')->group(function () {
         Route::get('/categorias', [CategoriaController::class, 'index']);
         Route::post('/categorias', [CategoriaController::class, 'store']);
         Route::put('/categorias/{categoria}', [CategoriaController::class, 'update']);
